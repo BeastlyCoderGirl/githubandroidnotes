@@ -1,0 +1,19 @@
+How to push notes from android to GitHub macOS
+—————————————————————————————————————————————————
+
+First thing you have too do is create a new repository you can call it whatever you want but what I called it was githubandroidnotes.
+
+Then you want to open android studio and create a new project.
+You want to hover offer VCS and you want to click , Enable Version Control Integation.
+
+And you want to make sure the drop down menu is Git nothing else then you hit OK.
+Now on the far left side of your screen hit the drop-down menu and select project not android
+And you want to Right-Click your project and hit Git - Add.
+
+Then you want to hit Git Commit Directory and you can add whatever commit you want it to do called. Then you want to hit commit so it will commit your code. (Note that committing is not the same as pushing). 
+
+Then make sure you have your URL which. You’ll get that from GitHub,  you want to go under git again and hit Manager Remotes and you want to use the tokens and hit generate your token. 
+
+Now you want to go back under the drop down - git - Push, And you want to hit finished project and push.
+
+Then you’ll be happy :-)
