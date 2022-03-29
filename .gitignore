@@ -20,6 +20,7 @@ gradle.properties
 gradlew
 gradlew.bat
 build.gradle
+/.gradle-wrapper
 
 
 
