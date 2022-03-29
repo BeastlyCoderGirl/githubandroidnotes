@@ -19,6 +19,7 @@ local.properties
 gradle.properties
 gradlew
 gradlew.bat
+build.gradle
 
 
 
