@@ -1,6 +1,5 @@
 /build
 *.iml
-*.setting.gradle
 *.idea/
 
 build/
