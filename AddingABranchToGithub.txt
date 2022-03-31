@@ -1,5 +1,0 @@
-First you. Need to create a repo and launch android studio then you want to check the VCS and enable it then you want to add then commit then push. Then you want to create a new branch.
-
-You'll need to go to the bottom right side hit master and Create new Branch And go inside that branch and make changes if you want to.
-
-Then you want to commit your work again and push it and your done
