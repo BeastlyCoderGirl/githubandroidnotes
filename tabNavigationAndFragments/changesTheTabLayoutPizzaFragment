@@ -1,0 +1,200 @@
+
+Step 1. Create a class called pizza and Each Pizza has a name and image resource
+ID. The image resource ID refers to the pizza images we added to the project above.:
+
+ private String name;
+ private int imageResourceId;
+
+Step 2.get the names and images:
+
+ public static final Pizza[] pizzas = {
+             new Pizza("Diavolo", R.drawable.diavolo),
+             new Pizza("Funghi", R.drawable.funghi)
+     };
+
+Step 3.Create The Pizza constructor:
+
+           private Pizza(String name, int imageResourceId)
+           {
+               this.name = name;
+               this.imageResourceId = imageResourceId;
+           }
+
+Step 4.These are getters for the
+private variables.
+
+           public String getName()
+           {
+               return name;
+           }
+
+             public int getImageResourceId()
+             {
+                  return imageResourceId;
+             }
+
+Step 5. File → New → Layout resource file. When prompted, name the layout
+“card_captioned_image”. Setting card's elevation gives it a drop
+shadow.:
+
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_view"
+    android:layout_width="match_parent"
+    android:layout_height="200dp"
+    android:layout_margin="5dp"
+    card_view:cardElevation="2dp"
+    card_view:cardCornerRadius="4dp">
+
+Step 6.We’ve put the ImageView and TextView
+in a LinearLayout, as the CardView can only have one direct child.
+
+       <LinearLayout
+           android:layout_width="match_parent"
+           android:layout_height="match_parent"
+           android:orientation="vertical">
+
+Step 7. (This is inside the inlinear layout) The image will be as wide as the
+CardView allows. We’re using centerCrop to make sure the image scales uniformly.
+
+               <ImageView android:id="@+id/info_image"
+                       android:layout_height="0dp"
+                       android:layout_width="match_parent"
+                       android:layout_weight="1.0"
+                       android:scaleType="centerCrop"/>
+
+Step 8. The CardView contains an ImageView and a TextView.
+
+              <TextView
+                    android:id="@+id/info_text"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginBottom="4dp"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"/>
+
+
+Step 9.File→New...→Java class. When prompted, name the class
+“CaptionedImagesAdapter”
+
+Step 10. We’re extending the RecyclerView class, so
+we need to import it.
+
+class CaptionedImagesAdapter extends
+
+Step 11.The ViewHolder is used to specify which views should
+be used for each data item
+
+      RecyclerView.Adapter<CaptionedImagesAdapter.ViewHolder>{
+
+Step 12.We added these variables earlier.
+They contain the captions and image resource IDs of the pizzas.
+
+          private String[] captions;
+          private int[] imageIds;
+
+Step 13.//You define the ViewHolder as
+an inner class. We’ll complete
+this later in the chapter.
+
+            public static class ViewHolder extends RecyclerView.ViewHolder {
+                private CardView cardView;
+                //Each ViewHolder will display a CardView
+                public ViewHolder(CardView v) {
+                    super(v);
+                    cardView = v;
+                }
+            }
+
+Step 14.//Pass data to the adapter in its constructor.
+
+            public CaptionedImagesAdapter(String[] captions, int[] imageIds) {
+                this.captions = captions;
+                this.imageIds = imageIds;
+            }
+
+Step 15.  //The number of data items
+
+             @Override
+             public int getItemCount()
+             {
+                 return captions.length;
+             }
+
+Step 16 Create a method from viewHolder:
+
+           @Override
+           public CaptionedImagesAdapter.ViewHolder onCreateViewHolder(
+                   ViewGroup parent, int viewType) {
+               CardView cv = (CardView) LayoutInflater.from(parent.getContext())
+                       //Use the layout we created
+                       //earlier for the CardViews.
+                       .inflate(R.layout.card_captioned_image, parent, false);
+               return new ViewHolder(cv);
+           }
+
+Step 17. he recycler view calls this method when it wants to
+use (or reuse) a view holder for a new piece of data.:
+
+ @Override
+    public void onBindViewHolder(ViewHolder holder, int position) {
+        CardView cardView = holder.cardView;
+        ImageView imageView = (ImageView) cardView.findViewById(R.id.info_image);
+        Drawable drawable =
+                ContextCompat.getDrawable(cardView.getContext(), imageIds[position]);
+        imageView.setImageDrawable(drawable);
+        imageView.setContentDescription(captions[position]);
+        //Populate the CardView’s ImageView
+        //and TextView with data.
+        TextView textView = (TextView) cardView.findViewById(R.id.info_text);
+        textView.setText(captions[position]);
+    }
+
+Step 18.Create a xml file called fragment_pizza and write:
+
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.recyclerview.widget.RecyclerView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/pizza_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical" />
+
+Step 19.You need to make sure this is a listItem fragment
+
+public class PizzaFragment extends Fragment
+
+Step 20. This is the whole code for onCreateView():
+
+           @Override
+            public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                                     Bundle savedInstanceState) {
+
+                //Use the layout we updated
+                //on the previous page
+                RecyclerView pizzaRecycler = (RecyclerView) inflater.inflate(
+                        R.layout.fragment_pizza, container, false);
+
+                //Add the pizza names to an array
+                //of Strings, and the pizza images
+                //to an array of ints.
+                String [] pizzaNames = new String[Pizza.pizzas.length];
+                for(int i = 0; i < pizzaNames.length; i++)
+                {
+                    pizzaNames[i] = Pizza.pizzas[i].getName();
+                }
+
+                //Add the pizza names to an array
+                //of Strings, and the pizza images
+                //to an array of ints.
+                int[] pizzaImages = new int[Pizza.pizzas.length];
+                for (int i = 0; i < pizzaImages.length; i++) {
+                    pizzaImages[i] = Pizza.pizzas[i].getImageResourceId();
+                }
+
+                //Pass the arrays to the adapter.
+                CaptionedImagesAdapter adapter = new CaptionedImagesAdapter(pizzaNames, pizzaImages);
+                pizzaRecycler.setAdapter(adapter);
+                GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 2);
+                pizzaRecycler.setLayoutManager(layoutManager);
+                return pizzaRecycler;
+            }
